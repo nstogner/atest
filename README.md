@@ -7,7 +7,7 @@ Something that should eventually succeed:
 ```go
 import "github.com/stretchr/testify/require"
 
-func TestEventually(t *testing.T) {
+func TestSomething(t *testing.T) {
 	rand.Seed(1)
 	r := rand.Intn(100)
 
@@ -22,7 +22,7 @@ Something that should consistently succeed:
 ```go
 import "github.com/stretchr/testify/require"
 
-func TestConsistently(t *testing.T) {
+func TestSomething(t *testing.T) {
 	rand.Seed(1)
 	r := rand.Intn(100)
 
