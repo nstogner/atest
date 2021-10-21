@@ -6,11 +6,15 @@ import (
 )
 
 var (
+	// Interval for retries.
 	Interval = time.Second / 10
-	Timeout  = 10 * time.Second
+	// Timeout for eventual tests.
+	Timeout = 10 * time.Second
+	// Duration for consistent tests.
 	Duration = 10 * time.Second
 )
 
+// T is an interface targeted at testing.T from the standard library.
 type T interface {
 	Errorf(format string, args ...interface{})
 	FailNow()
@@ -18,6 +22,9 @@ type T interface {
 	Logf(format string, args ...interface{})
 }
 
+// Eventually runs a test repeatedly (based on async.Interval)
+// until it passes or until async.Timeout is reached. If Timeout
+// is reached the entire test fails.
 func Eventually(t T, f func(t T)) {
 	t0 := time.Now()
 
@@ -57,6 +64,9 @@ func Eventually(t T, f func(t T)) {
 	return
 }
 
+// Eventually runs a test repeatedly (based on async.Interval)
+// until it fails or until async.Duration is reached. If Duration
+// is reached the entire test passes.
 func Consistently(t T, f func(t T)) {
 	t0 := time.Now()
 
