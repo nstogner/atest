@@ -5,6 +5,8 @@ Helpers for testing async behavior.
 Something that should eventually succeed:
 
 ```go
+import "github.com/stretchr/testify/require"
+
 func TestEventually(t *testing.T) {
 	rand.Seed(1)
 	r := rand.Intn(100)
@@ -18,6 +20,8 @@ func TestEventually(t *testing.T) {
 Something that should consistently succeed:
 
 ```go
+import "github.com/stretchr/testify/require"
+
 func TestConsistently(t *testing.T) {
 	rand.Seed(1)
 	r := rand.Intn(100)
