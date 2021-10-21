@@ -1,9 +1,10 @@
 package atest_test
 
 import (
-	"atest"
 	"math/rand"
 	"testing"
+
+	"github.com/nstogner/atest"
 
 	"github.com/stretchr/testify/require"
 )

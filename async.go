@@ -14,6 +14,8 @@ var (
 type T interface {
 	Errorf(format string, args ...interface{})
 	FailNow()
+	Log(args ...interface{})
+	Logf(format string, args ...interface{})
 }
 
 func Eventually(t T, f func(t T)) {
@@ -101,6 +103,12 @@ func (t *rememberT) Errorf(format string, args ...interface{}) {
 func (t *rememberT) FailNow() {
 	t.failnow = true
 	runtime.Goexit()
+}
+func (t *rememberT) Log(args ...interface{}) {
+	t.t.Log(args...)
+}
+func (t *rememberT) Logf(format string, args ...interface{}) {
+	t.t.Logf(format, args...)
 }
 
 func (t *rememberT) failed() bool {

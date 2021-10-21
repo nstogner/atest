@@ -1,9 +1,10 @@
 package atest_test
 
 import (
-	"atest"
 	"testing"
 	"time"
+
+	"github.com/nstogner/atest"
 
 	"github.com/stretchr/testify/require"
 )
@@ -15,6 +16,8 @@ func init() {
 }
 
 type mockT struct {
+	t *testing.T
+
 	failnow      bool
 	errorf       bool
 	errorfFormat string
@@ -29,13 +32,20 @@ func (t *mockT) Errorf(format string, args ...interface{}) {
 func (t *mockT) FailNow() {
 	t.failnow = true
 }
+func (t *mockT) Log(args ...interface{}) {
+	t.t.Log(args...)
+}
+func (t *mockT) Logf(format string, args ...interface{}) {
+	t.t.Logf(format, args...)
+}
 
 func TestEventuallyFailNowSuccess(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Eventually(mt, func(t atest.T) {
 		i++
+		t.Log("i", i)
 		if i < 3 {
 			t.FailNow()
 		}
@@ -49,9 +59,10 @@ func TestEventuallyFailNowSuccess(t *testing.T) {
 func TestEventuallyErrorfSuccess(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Eventually(mt, func(t atest.T) {
 		i++
+		t.Logf("i: %v", i)
 		if i < 3 {
 			t.Errorf("utoh")
 		}
@@ -65,7 +76,7 @@ func TestEventuallyErrorfSuccess(t *testing.T) {
 func TestEventuallyFailNowFailure(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Eventually(mt, func(t atest.T) {
 		i++
 		t.FailNow()
@@ -79,7 +90,7 @@ func TestEventuallyFailNowFailure(t *testing.T) {
 func TestEventuallyErrorfFailure(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Eventually(mt, func(t atest.T) {
 		i++
 		t.Errorf("utoh")
@@ -93,7 +104,7 @@ func TestEventuallyErrorfFailure(t *testing.T) {
 func TestConsistentlyFailNowFailure(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Consistently(mt, func(t atest.T) {
 		i++
 		if i >= 3 {
@@ -109,7 +120,7 @@ func TestConsistentlyFailNowFailure(t *testing.T) {
 func TestConsistentlyErrorfFailure(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Consistently(mt, func(t atest.T) {
 		i++
 		if i >= 3 {
@@ -127,7 +138,7 @@ func TestConsistentlyErrorfFailure(t *testing.T) {
 func TestConsistentlyFailNowSuccess(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Consistently(mt, func(t atest.T) {
 		i++
 	})
@@ -140,7 +151,7 @@ func TestConsistentlyFailNowSuccess(t *testing.T) {
 func TestConsistentlyErrorfSuccess(t *testing.T) {
 	i := 0
 
-	mt := &mockT{}
+	mt := &mockT{t: t}
 	atest.Consistently(mt, func(t atest.T) {
 		i++
 	})
