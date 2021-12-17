@@ -82,10 +82,12 @@ func Consistently(t T, f func(t T)) {
 		<-done
 
 		if remember.failed() {
+			if remember.errorfFormat != "" {
+				t.Errorf(remember.errorfFormat, remember.errorfArgs...)
+			}
+
 			if remember.failnow {
 				t.FailNow()
-			} else {
-				t.Errorf(remember.errorfFormat, remember.errorfArgs...)
 			}
 			return
 		}
