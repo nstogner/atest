@@ -1,8 +1,6 @@
 # Async Test Helper
 
-**Archived**: Take a look at the Eventually() in https://github.com/stretchr/testify
-
-**PS**: There is a issue open for adding a Consistently(): https://github.com/stretchr/testify/issues/1087
+**Archived**: Take a look at the Eventually() and [Consistently()](https://github.com/stretchr/testify/issues/1087) in https://github.com/stretchr/testify
 
 Helpers for testing async behavior.
 
