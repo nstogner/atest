@@ -29,6 +29,7 @@ func Eventually(t T, f func(t T)) {
 	t0 := time.Now()
 
 	var (
+		failnow      bool
 		errorf       bool
 		errorfFormat string
 		errorfArgs   []interface{}
@@ -46,18 +47,19 @@ func Eventually(t T, f func(t T)) {
 		if !remember.failed() {
 			return
 		}
-		if remember.errorf {
-			errorf = true
-			errorfFormat = remember.errorfFormat
-			errorfArgs = remember.errorfArgs
-		}
+
+		failnow = remember.failnow
+		errorf = remember.errorf
+		errorfFormat = remember.errorfFormat
+		errorfArgs = remember.errorfArgs
 
 		time.Sleep(Interval)
 	}
 
 	if errorf {
 		t.Errorf(errorfFormat, errorfArgs...)
-	} else {
+	}
+	if failnow {
 		t.FailNow()
 	}
 
